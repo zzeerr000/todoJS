@@ -1,5 +1,5 @@
 <template>
-  <div style="flex-grow: 1">
+  <div style="flex: 1; max-width: 33.33%">
     <h1 class="task-status">{{ status }}</h1>
     <div class="card-holder">
       <TaskCard v-for="task in taskArray" :key="task.id" :task="task.text" />
@@ -32,7 +32,7 @@ defineProps({
 
 .card-holder {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   box-sizing: border-box;
   padding: 20px;
   flex-direction: column;

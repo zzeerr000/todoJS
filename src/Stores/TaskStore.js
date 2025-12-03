@@ -5,18 +5,17 @@ import { computed, ref } from 'vue'
 export const useTaskStore = defineStore('tasks', () => {
   const taskArray = ref([])
   const openedTasks = computed(() => taskArray.value.filter((task) => task.status === 'Открыто'))
-  const progressTasks = computed(() =>
-    taskArray.value.filter((task) => task.status === 'В процессе'),
-  )
+  const progressTasks = computed(() => taskArray.value.filter((task) => task.status === 'В работе'))
   const closedTasks = computed(() => taskArray.value.filter((task) => task.status === 'Закрыто'))
 
   async function addTask(txt) {
-    const inputValue = txt
-    await axios.post('https://3a5d169ad18025ad.mokky.dev/tasks', {
-      text: inputValue,
-      status: 'В процессе',
-    })
-    await fetchTasks()
+    if (txt != '') {
+      await axios.post('https://3a5d169ad18025ad.mokky.dev/tasks', {
+        text: txt,
+        status: 'В работе',
+      })
+      await fetchTasks()
+    }
   }
 
   async function fetchTasks() {

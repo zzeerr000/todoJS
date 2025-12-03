@@ -31,6 +31,7 @@ const taskStore = useTaskStore()
   padding-inline: 40px;
   box-sizing: border-box;
   height: 330px;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 641px) {

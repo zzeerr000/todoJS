@@ -2,7 +2,7 @@
   <div class="current-tasks-window">
     <h2>Добавить задачу</h2>
     <div class="add-task-row">
-      <span @click="taskStore.addTask(inputTxt)" class="plus-button">{{
+      <span @click="handleSubmit" class="plus-button">{{
         isMobile ? 'Добавить задачу' : '+'
       }}</span>
       <div style="flex-grow: 1; position: relative">
@@ -24,6 +24,11 @@ const inputTxt = ref('')
 
 function clearInput() {
   inputTxt.value = ''
+}
+
+function handleSubmit() {
+  taskStore.addTask(inputTxt.value)
+  clearInput()
 }
 </script>
 
