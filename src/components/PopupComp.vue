@@ -8,31 +8,36 @@
       <input type="text" class="popup-input" v-model="taskStore.popupTask.text" />
       <div class="status-holder">
         <button
+          v-if="taskStore.popupTask.status != 'В работе'"
           :class="{
             'active-button': taskStore.popupTask.status === 'В работе',
             'status-button': true,
           }"
           @click="taskStore.popupTask.status = 'В работе'"
         >
-          В работе
+          <span>В работу</span>
         </button>
+
         <button
+          v-if="taskStore.popupTask.status != 'Закрыто'"
           :class="{
             'active-button': taskStore.popupTask.status === 'Закрыто',
             'status-button': true,
           }"
           @click="taskStore.popupTask.status = 'Закрыто'"
         >
-          Закрыто
+          <span>Закрыть</span>
         </button>
+
         <button
+          v-if="taskStore.popupTask.status != 'Открыто'"
           :class="{
             'active-button': taskStore.popupTask.status === 'Открыто',
             'status-button': true,
           }"
           @click="taskStore.popupTask.status = 'Открыто'"
         >
-          Открыто
+          <span>{{ taskStore.popupTask.status === 'Закрыто' ? 'Переоткрыть' : 'Отложить' }}</span>
         </button>
       </div>
       <div class="action-holder">
