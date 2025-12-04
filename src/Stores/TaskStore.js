@@ -46,10 +46,15 @@ export const useTaskStore = defineStore('tasks', () => {
     }
   }
 
+  const sortPriority = { Открыто: 1, 'В работе': 2, Закрыто: 3 }
+
   async function fetchTasks() {
     try {
       const { data } = await axios.get('https://3a5d169ad18025ad.mokky.dev/tasks')
-      taskArray.value = await data.reverse()
+      taskArray.value = await data
+      taskArray.value = taskArray.value.sort(
+        (a, b) => sortPriority[a.status] - sortPriority[b.status],
+      )
     } catch (err) {
       console.log(err)
     }
