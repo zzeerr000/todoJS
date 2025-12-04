@@ -1,21 +1,28 @@
 <template>
   <div style="flex: 1; max-width: 33.33%">
     <h1 class="task-status">{{ status }}</h1>
-    <div class="card-holder" @dragover.prevent @drop="onDrop">
-      <div
-        v-for="task in taskArray"
-        :key="task.id"
-        class="draggable-card"
-        draggable="true"
-        @dragstart="onDragStart($event, task)"
+    <div class="card-holder">
+      <draggable
+        :list="taskArray"
+        :group="{ name: 'tasks', pull: true, put: true }"
+        item-key="id"
+        @change="onChange"
+        class="draggable-list"
+        ghost-class="ghost"
       >
-        <TaskCard :task="task.text" />
-      </div>
+        <template #item="{ element }">
+          <div class="draggable-card">
+            <TaskCard :task="element.text" />
+          </div>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
 
 <script setup lang="js">
+import draggable from 'vuedraggable'
+import { computed } from 'vue'
 import TaskCard from './TaskCard.vue'
 import { useTaskStore } from '@/Stores/TaskStore'
 
@@ -23,26 +30,24 @@ const taskStore = useTaskStore()
 
 const props = defineProps({
   status: String,
-  taskArray: Array,
 })
 
-const onDragStart = (event, task) => {
-  if (event?.dataTransfer) {
-    event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('text/plain', String(task.id))
+const taskArray = computed(() => {
+  const statusMap = {
+    Открыто: taskStore.openedTasks,
+    'В работе': taskStore.progressTasks,
+    Закрыто: taskStore.closedTasks,
   }
-}
+  return statusMap[props.status] || []
+})
 
-const onDrop = (event) => {
-  if (!event?.dataTransfer) return
-
-  const id = Number(event.dataTransfer.getData('text/plain'))
-  if (!id) return
-
-  const task = taskStore.taskArray.find((t) => t.id === id)
-  if (!task || task.status === props.status) return
-
-  taskStore.updateTask(id, props.status, task.text)
+const onChange = (event) => {
+  if (event.added) {
+    const addedTask = event.added.element
+    if (addedTask && addedTask.status !== props.status) {
+      taskStore.updateTask(addedTask.id, props.status, addedTask.text)
+    }
+  }
 }
 </script>
 
@@ -60,6 +65,10 @@ const onDrop = (event) => {
   margin-bottom: 20px;
 }
 
+.ghost {
+  opacity: 0.5;
+}
+
 .card-holder {
   display: flex;
   gap: 16px;
@@ -71,7 +80,17 @@ const onDrop = (event) => {
   min-height: 280px;
 }
 
+.draggable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .draggable-card {
   cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 </style>
