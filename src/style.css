@@ -3,3 +3,35 @@ body {
   margin: 0 !important;
   padding: 0;
 }
+
+.app-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  border: none;
+}
+
+@media screen and (max-width: 1221px) {
+  .app-wrapper {
+    max-width: 991px;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .app-wrapper {
+    max-width: 640px;
+  }
+
+  body {
+    background-color: #f4f4f4;
+  }
+}
+
+@media screen and (max-width: 641px) {
+  .app-wrapper {
+    max-width: 340px;
+  }
+
+  body {
+    background-color: #f4f4f4;
+  }
+}

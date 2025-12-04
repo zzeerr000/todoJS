@@ -1,7 +1,7 @@
 <template>
   <div class="task-row">
     <span class="task-text">{{ taskText }}</span>
-    <span class="task-status">{{ taskStatus }}</span>
+    <span class="task-status" @click="showPopup">{{ taskStatus }}</span>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
 defineProps({
   taskText: String,
   taskStatus: String,
+  showPopup: Function,
 })
 </script>
 <style scoped lang="scss">
@@ -20,6 +21,7 @@ defineProps({
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
+  height: 31px;
 
   &:last-child {
     border: none;
@@ -36,6 +38,11 @@ defineProps({
   width: 92px;
   height: 28px;
   font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eaeaea;
+  }
 }
 
 @media screen and (max-width: 641px) {

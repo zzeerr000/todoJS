@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts"></script>
-<style lang="scss">
+<style scoped lang="scss">
 .footer {
   background-color: #bbb8b6;
   border-top-left-radius: 48px;

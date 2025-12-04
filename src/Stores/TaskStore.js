@@ -7,25 +7,70 @@ export const useTaskStore = defineStore('tasks', () => {
   const openedTasks = computed(() => taskArray.value.filter((task) => task.status === 'Открыто'))
   const progressTasks = computed(() => taskArray.value.filter((task) => task.status === 'В работе'))
   const closedTasks = computed(() => taskArray.value.filter((task) => task.status === 'Закрыто'))
+  const isPopupVisible = ref(false)
+  const popupTask = ref(null)
 
   async function addTask(txt) {
     if (txt != '') {
-      await axios.post('https://3a5d169ad18025ad.mokky.dev/tasks', {
-        text: txt,
-        status: 'В работе',
+      try {
+        await axios.post('https://3a5d169ad18025ad.mokky.dev/tasks', {
+          text: txt,
+          status: 'Открыто',
+        })
+        await fetchTasks()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function deleteTask(id) {
+    try {
+      await axios.delete(`https://3a5d169ad18025ad.mokky.dev/tasks/${id}`)
+      await fetchTasks()
+      showPopup()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function updateTask(id, status, text) {
+    try {
+      await axios.patch(`https://3a5d169ad18025ad.mokky.dev/tasks/${id}`, {
+        status: status,
+        text: text,
       })
       await fetchTasks()
+    } catch (err) {
+      console.log(err)
     }
   }
 
   async function fetchTasks() {
     try {
       const { data } = await axios.get('https://3a5d169ad18025ad.mokky.dev/tasks')
-      taskArray.value = data
+      taskArray.value = await data.reverse()
     } catch (err) {
       console.log(err)
     }
   }
 
-  return { taskArray, addTask, fetchTasks, openedTasks, closedTasks, progressTasks }
+  function showPopup(task) {
+    popupTask.value = { ...task }
+    isPopupVisible.value = !isPopupVisible.value
+  }
+
+  return {
+    taskArray,
+    addTask,
+    deleteTask,
+    updateTask,
+    fetchTasks,
+    openedTasks,
+    closedTasks,
+    progressTasks,
+    isPopupVisible,
+    popupTask,
+    showPopup,
+  }
 })

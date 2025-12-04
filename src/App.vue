@@ -4,6 +4,7 @@ import TaskBoard from './components/taskBoard/TaskBoard.vue'
 import TodoList from './components/TodoList/TodoList.vue'
 import { onMounted, onUnmounted, provide, ref } from 'vue'
 import { useTaskStore } from './Stores/TaskStore.js'
+import PopupComp from './components/PopupComp.vue'
 
 const taskStore = useTaskStore()
 
@@ -20,45 +21,33 @@ onMounted(async () => {
   window.addEventListener('resize', handleResize)
   await taskStore.fetchTasks()
 })
-onUnmounted(() => window.addEventListener('resize', handleResize))
+onUnmounted(() => window.removeEventListener('resize', handleResize))
 
 provide('isMobile', isMobile)
 </script>
 
 <template>
   <div>
-    <div class="app-wrapper">
-      <div>
+    <div class="app-wrapper-main">
+      <div class="todo-wrapper">
         <TodoList />
       </div>
       <TaskBoard v-if="isDesktop" />
     </div>
   </div>
   <FooterComp />
+  <PopupComp v-if="taskStore.isPopupVisible" />
 </template>
 
 <style scoped lang="scss">
-.app-wrapper {
-  max-width: 1200px;
+.todo-wrapper {
+  background-color: #f4f4f4;
+  box-sizing: border-box;
+  padding: 1px;
+}
+
+.app-wrapper-main {
   margin: auto;
   border: none;
-}
-
-@media screen and (max-width: 1221px) {
-  .app-wrapper {
-    max-width: 991px;
-  }
-}
-
-@media screen and (max-width: 991px) {
-  .app-wrapper {
-    max-width: 640px;
-  }
-}
-
-@media screen and (max-width: 641px) {
-  .app-wrapper {
-    max-width: 340px;
-  }
 }
 </style>

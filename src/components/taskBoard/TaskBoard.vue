@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-wrapper">
     <h1>Доска задач</h1>
     <div class="status-holder">
       <TaskSubboard status="Открыто" :task-array="taskStore.openedTasks" />
