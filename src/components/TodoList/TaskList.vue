@@ -56,7 +56,7 @@ defineProps({
   .task-list-holder {
     background-color: #f4f4f4;
     padding: 0;
-    height: auto;
+    max-height: fit-content;
   }
 }
 </style>

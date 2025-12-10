@@ -7,7 +7,11 @@
         <AddTask />
       </div>
       <TaskList :show-more="showMore" />
-      <button v-if="tasksStore.taskArray.length > 5" @click="handleShowMore" class="show-more">
+      <button
+        v-if="tasksStore.taskArray.length > 5 && isMobile == false"
+        @click="handleShowMore"
+        class="show-more"
+      >
         <span>{{ showMore ? 'Скрыть' : 'Показать еще' }}</span>
         <img :class="{ 'ar-up': showMore, 'ar-down': !showMore }" src="/Vector.png" alt="arr" />
       </button>
@@ -20,8 +24,9 @@ import { useTaskStore } from '@/Stores/TaskStore'
 import AddTask from './AddTask.vue'
 import CurrentTasks from './CurrentTasks.vue'
 import TaskList from './TaskList.vue'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 
+const isMobile = inject('isMobile')
 const tasksStore = useTaskStore()
 const showMore = ref(false)
 
