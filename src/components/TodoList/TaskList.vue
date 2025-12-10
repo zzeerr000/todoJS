@@ -4,7 +4,7 @@
       <h3>Задачи</h3>
       <h3 v-if="!isMobile" style="padding-right: 16px">Статус</h3>
     </div>
-
+    <div v-if="taskStore.taskArray.length == 0" class="empty-list">Пусто</div>
     <TaskItem
       v-for="task in taskStore.taskArray"
       :key="task.id"
@@ -34,14 +34,22 @@ defineProps({
   padding-top: 20px;
   padding-inline: 40px;
   box-sizing: border-box;
-  height: 330px;
+  max-height: 330px;
   overflow: hidden;
 
   &--more {
     @extend .task-list-holder;
     overflow: unset;
     height: auto;
+    max-height: fit-content;
   }
+}
+
+.empty-list {
+  opacity: 0.6;
+  margin: auto;
+  align-self: auto;
+  padding-bottom: 30px;
 }
 
 @media screen and (max-width: 641px) {

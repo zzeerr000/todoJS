@@ -1,22 +1,24 @@
 <template>
   <div style="flex: 1; max-width: 33.33%">
     <h1 class="task-status">{{ status }}</h1>
-    <div class="card-holder">
-      <draggable
-        :list="taskArray"
-        :group="{ name: 'tasks', pull: true, put: true }"
-        item-key="id"
-        @change="onChange"
-        class="draggable-list"
-        ghost-class="ghost"
-      >
-        <template #item="{ element }">
-          <div class="draggable-card">
-            <TaskCard :task="element.text" />
-          </div>
-        </template>
-      </draggable>
-    </div>
+    <draggable
+      :list="taskArray"
+      :group="{ name: 'tasks', pull: true, put: true }"
+      item-key="id"
+      @change="onChange"
+      class="card-holder"
+      ghost-class="ghost"
+    >
+      <template #item="{ element }">
+        <div class="draggable-card">
+          <TaskCard :task="element.text" />
+        </div>
+      </template>
+
+      <template #footer>
+        <div v-if="taskArray.length === 0" class="empty-placeholder">Пусто</div>
+      </template>
+    </draggable>
   </div>
 </template>
 
@@ -80,17 +82,17 @@ const onChange = (event) => {
   min-height: 280px;
 }
 
-.draggable-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
 .draggable-card {
   cursor: grab;
 
   &:active {
     cursor: grabbing;
   }
+}
+
+.empty-placeholder {
+  margin: auto;
+  opacity: 0.6;
+  font-weight: bold;
 }
 </style>

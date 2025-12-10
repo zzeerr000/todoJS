@@ -82,6 +82,7 @@ function handleSubmit() {
   border-radius: 100px;
   width: 100%;
   padding: 10px;
+  padding-right: 45px;
   min-height: 44px;
 
   &:focus {

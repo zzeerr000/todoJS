@@ -28,6 +28,12 @@ defineProps({
   }
 }
 
+.task-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+
 .task-status {
   display: flex;
   justify-content: center;
